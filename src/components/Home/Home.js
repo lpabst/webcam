@@ -110,9 +110,12 @@ class Home extends Component {
     this.setState({photos});
   }
 
-  savePhoto(i){
-    console.log(i);
-    let data = this.state.photos[i];
+  savePhoto(e){
+    // I have the index stored as the 'id' on each photo
+    let photoIndex = e.target.id.replace(/photo/, '');
+
+    // Info for the download
+    let data = this.state.photos[photoIndex];
     let filename = 'webcam_capture' + Math.floor(Math.random() * 10000000);
     let blobType = 'image/png';
 
@@ -177,11 +180,10 @@ class Home extends Component {
         <div className='photos'>
           {
             this.state.photos.map((item, i) => {
-              let index = i;
               return <div className='photo_wrapper' key={i}>
                 <img className='photo' src={item} alt='selfie' />
                 <p className='close_x' onClick={(e, i) => this.deleteThisPic(i)}>X</p>
-                <p className='save_photo' onClick={(e, index) => this.savePhoto(0)} >Download/Save</p>
+                <p className='save_photo' onClick={(e) => this.savePhoto(e)} id={'photo' + i} >Download/Save</p>
               </div>
             })
           }
