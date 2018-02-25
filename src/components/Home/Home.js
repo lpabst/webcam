@@ -111,7 +111,25 @@ class Home extends Component {
   }
 
   savePhoto(i){
-    
+    let data = this.state.photos[i];
+    let filename = 'webcam_capture' + Math.floor(Math.random() * 10000000);
+    let type = 'image/png';
+
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
   }
 
   render() {
@@ -135,7 +153,7 @@ class Home extends Component {
               return <div className='photo_wrapper' key={i}>
                 <img className='photo' src={item} alt='selfie' />
                 <p className='close_x' onClick={(e, i) => this.deleteThisPic(i)}>X</p>
-                <p className='save_photo' onClick={(e, i) => this.savePhoto(i)} >Save</p>
+                <p className='save_photo' onClick={(e, i) => this.savePhoto(i)} >Download/Save</p>
               </div>
             })
           }
