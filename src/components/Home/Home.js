@@ -104,19 +104,39 @@ class Home extends Component {
     this.setState({photos});
   }
 
+  deleteThisPic(i){
+    let {photos} = this.state;
+    photos.splice(i, 1);
+    this.setState({photos});
+  }
+
+  savePhoto(i){
+    
+  }
+
   render() {
     return (
       <div className="home">
 
-        <video className='video' id='video' muted></video>
-        <button className="photo_btn" onClick={this.takePhoto} >Take photo</button>
-
         <canvas id='canvas'></canvas>
+
+        <div className='video_wrapper'>
+          <video className='video' id='video' muted></video>
+        </div>
+
+        <div className='button_wrapper'>
+          <button className="photo_btn" onClick={this.takePhoto} >Take photo</button>
+        </div>
+
 
         <div className='photos'>
           {
             this.state.photos.map((item, i) => {
-              return <div className='photo_wrapper' key={i}><img className='photo' src={item} alt='selfie' /></div>
+              return <div className='photo_wrapper' key={i}>
+                <img className='photo' src={item} alt='selfie' />
+                <p className='close_x' onClick={(e, i) => this.deleteThisPic(i)}>X</p>
+                <p className='save_photo' onClick={(e, i) => this.savePhoto(i)} >Save</p>
+              </div>
             })
           }
         </div>
