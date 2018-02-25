@@ -111,16 +111,42 @@ class Home extends Component {
   }
 
   savePhoto(i){
+    console.log(i);
     let data = this.state.photos[i];
     let filename = 'webcam_capture' + Math.floor(Math.random() * 10000000);
-    let type = 'image/png';
+    let blobType = 'image/png';
 
-    var file = new Blob([data], {type: type});
+    // atob to base64_decode the data-URI
+    let image_data = atob(data.split(',')[1]);
+
+    // Use typed arrays to convert the binary data to a Blob
+    let arraybuffer = new ArrayBuffer(image_data.length);
+    let view = new Uint8Array(arraybuffer);
+
+    for (var i=0; i<image_data.length; i++) {
+        view[i] = image_data.charCodeAt(i) & 0xff;
+    }
+
+    let blob;
+    try {
+        // This is the recommended method:
+        blob = new Blob([arraybuffer], {type: blobType});
+    } catch (e) {
+        // The BlobBuilder API has been deprecated in favor of Blob, but older
+        // browsers don't know about the Blob constructor
+        // IE10 also supports BlobBuilder, but since the `Blob` constructor
+        //  also works, there's no need to add `MSBlobBuilder`.
+        let bb = new (window.WebKitBlobBuilder || window.MozBlobBuilder);
+        bb.append(arraybuffer);
+        blob = bb.getBlob(blobType); // <-- Here's the Blob
+    }
+
+    // Create an <a> tag, set it's href/download properties to the blob, click it (starts download), then remove it from the DOM
     if (window.navigator.msSaveOrOpenBlob) // IE10+
-        window.navigator.msSaveOrOpenBlob(file, filename);
+        window.navigator.msSaveOrOpenBlob(blob, filename);
     else { // Others
-        var a = document.createElement("a"),
-                url = URL.createObjectURL(file);
+        let a = document.createElement("a"),
+                url = URL.createObjectURL(blob);
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
@@ -130,6 +156,7 @@ class Home extends Component {
             window.URL.revokeObjectURL(url);  
         }, 0); 
     }
+
   }
 
   render() {
@@ -150,10 +177,11 @@ class Home extends Component {
         <div className='photos'>
           {
             this.state.photos.map((item, i) => {
+              let index = i;
               return <div className='photo_wrapper' key={i}>
                 <img className='photo' src={item} alt='selfie' />
                 <p className='close_x' onClick={(e, i) => this.deleteThisPic(i)}>X</p>
-                <p className='save_photo' onClick={(e, i) => this.savePhoto(i)} >Download/Save</p>
+                <p className='save_photo' onClick={(e, index) => this.savePhoto(0)} >Download/Save</p>
               </div>
             })
           }
