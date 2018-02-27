@@ -10,6 +10,7 @@ class Home extends Component {
       photos: [],
       gender: '',
       age: 0,
+      race: 'Unknown',
       white: 0,
       hispanic: 0,
       black: 0,
@@ -184,16 +185,34 @@ class Home extends Component {
       let data = res.data.images[0];
       let info = data.faces[0];
       let att = info.attributes;
+      let races = ['asian', 'black', 'hispanic', 'other', 'white'];
+      let race = 'Unknown';
+      let highestRaceConfidence = 0;
+
+      // Checks to see which race is most likely
+      for (let i = 0; i < races.length; i++){
+        if (att[races[i]] > highestRaceConfidence){
+          highestRaceConfidence = att[races[i]];
+          race = races[i];
+        }
+      }
       
       this.setState({
         gender: att.gender.type,
         age: att.age,
+        race: race,
         white: att.white,
         hispanic: att.hispanic,
         black: att.black,
         asian: att.asian,
       })
-
+      
+      // Visual alert to the user that the call was successful
+      document.getElementById('photoInfo').style.border = '20px solid green';
+      setTimeout(() => {
+        document.getElementById('photoInfo').style.border = 'none';
+        document.getElementById('photoInfo').style.borderTop = '1px solid black';
+      }, 1000)
     })
     .catch(err=>console.log(err));
   }
@@ -204,6 +223,12 @@ class Home extends Component {
 
         <canvas id='canvas'></canvas>
 
+        <div className='photoInfo' id='photoInfo' >
+          <p>Age: {this.state.age}</p>
+          <p>gender: {this.state.gender}</p>
+          <p>Race/Ethnicity: {this.state.race}</p>
+        </div>
+        
         <div className='video_wrapper'>
           <video className='video' id='video' muted></video>
         </div>
@@ -232,15 +257,6 @@ class Home extends Component {
               </div>
             })
           }
-        </div>
-
-        <div className='photoInfo'>
-          <p>Age: {this.state.age}</p>
-          <p>gender: {this.state.gender}</p>
-          <p>White: {this.state.white}</p>
-          <p>Hispanic: {this.state.hispanic}</p>
-          <p>Black: {this.state.black}</p>
-          <p>Asian: {this.state.asian}</p>
         </div>
 
       </div>

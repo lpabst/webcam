@@ -1,0 +1,46 @@
+{
+    "images": [
+        {
+            "faces": [
+                {
+                    "attributes": {
+                        "age": 28,
+                        "asian": 0.00007,
+                        "black": 0.00001,
+                        "gender": {
+                            "femaleConfidence": 0.00004,
+                            "maleConfidence": 0.99996,
+                            "type": "M"
+                        },
+                        "glasses": "Eye",
+                        "hispanic": 0.00446,
+                        "lips": "Together",
+                        "other": 0.00018,
+                        "white": 0.99528
+                    },
+                    "chinTipX": 338,
+                    "chinTipY": 356,
+                    "confidence": 0.99933,
+                    "eyeDistance": 73,
+                    "face_id": 1,
+                    "height": 165,
+                    "leftEyeCenterX": 372,
+                    "leftEyeCenterY": 229,
+                    "pitch": 19,
+                    "quality": -0.4461,
+                    "rightEyeCenterX": 299,
+                    "rightEyeCenterY": 231,
+                    "roll": -1,
+                    "topLeftX": 250,
+                    "topLeftY": 191,
+                    "width": 165,
+                    "yaw": -3
+                }
+            ],
+            "file": "base64_13f9acae238c4f15ae16b0599027d187.jpg",
+            "height": 480,
+            "status": "Complete",
+            "width": 640
+        }
+    ]
+}
