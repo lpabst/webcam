@@ -8,6 +8,12 @@ class Home extends Component {
     super(props);
     this.state = {
       photos: [],
+      gender: '',
+      age: 0,
+      white: 0,
+      hispanic: 0,
+      black: 0,
+      asian: 0,
     }
 
     this.takePhoto = this.takePhoto.bind(this);
@@ -15,7 +21,6 @@ class Home extends Component {
 
   componentDidMount() {
     this.openWebCam();
-    this.facialRecognition();
   }
 
   openWebCam() {
@@ -111,9 +116,7 @@ class Home extends Component {
     this.setState({photos});
   }
 
-  savePhoto(e){
-    // I have the index stored as the 'id' on each photo
-    let photoIndex = e.target.id.replace(/photo/, '');
+  savePhoto(photoIndex){
 
     // Info for the download
     let data = this.state.photos[photoIndex];
@@ -163,11 +166,9 @@ class Home extends Component {
 
   }
 
-  facialRecognition(){
-    let image = "https://s3.amazonaws.com/kairos-media/blog-images/kairos-how-it-works-liz-photo.jpg";
-    if (this.state.photos[0]){
-      image = this.state.photos[0];
-    }
+  facialRecognition(i){
+    let image = this.state.photos[i];
+    
     axios.post('/api/facialRecognition', {
       url: 'https://api.kairos.com/detect',
       payload: {
@@ -175,9 +176,24 @@ class Home extends Component {
       }
     })
     .then (res => {
-      console.log(res);
+      if (!res.data.images){
+        console.log(res);
+        return alert('Error, no image data returned');
+      }
+
       let data = res.data.images[0];
-      console.log(data);
+      let info = data.faces[0];
+      let att = info.attributes;
+      
+      this.setState({
+        gender: att.gender.type,
+        age: att.age,
+        white: att.white,
+        hispanic: att.hispanic,
+        black: att.black,
+        asian: att.asian,
+      })
+
     })
     .catch(err=>console.log(err));
   }
@@ -200,13 +216,31 @@ class Home extends Component {
         <div className='photos'>
           {
             this.state.photos.map((item, i) => {
+              // closure function preserves the value of 'i' for the click events
+              function createIndex(i){
+                const inner = function(i){return i}
+                let index = inner(i);
+                return index;
+              }
+              let index = createIndex(i);
+
               return <div className='photo_wrapper' key={i}>
                 <img className='photo' src={item} alt='selfie' />
-                <p className='close_x' onClick={(e, i) => this.deleteThisPic(i)}>X</p>
-                <p className='save_photo' onClick={(e) => this.savePhoto(e)} id={'photo' + i} >Download/Save</p>
+                <p className='close_x' onClick={(e, i) => this.deleteThisPic(index)}>X</p>
+                <p className='save_photo' onClick={(e, i) => this.savePhoto(index)} >Download/Save</p>
+                <p className='save_photo' onClick={(e, i) => this.facialRecognition(index)} >Run FR</p>
               </div>
             })
           }
+        </div>
+
+        <div className='photoInfo'>
+          <p>Age: {this.state.age}</p>
+          <p>gender: {this.state.gender}</p>
+          <p>White: {this.state.white}</p>
+          <p>Hispanic: {this.state.hispanic}</p>
+          <p>Black: {this.state.black}</p>
+          <p>Asian: {this.state.asian}</p>
         </div>
 
       </div>
