@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import axios from 'axios';
 import './Home.css';
 
 
@@ -15,6 +15,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.openWebCam();
+    this.facialRecognition();
   }
 
   openWebCam() {
@@ -160,6 +161,25 @@ class Home extends Component {
         }, 0); 
     }
 
+  }
+
+  facialRecognition(){
+    let image = "https://s3.amazonaws.com/kairos-media/blog-images/kairos-how-it-works-liz-photo.jpg";
+    if (this.state.photos[0]){
+      image = this.state.photos[0];
+    }
+    axios.post('/api/facialRecognition', {
+      url: 'https://api.kairos.com/detect',
+      payload: {
+        "image": image
+      }
+    })
+    .then (res => {
+      console.log(res);
+      let data = res.data.images[0];
+      console.log(data);
+    })
+    .catch(err=>console.log(err));
   }
 
   render() {
