@@ -15,7 +15,7 @@
 }
 
 .login input{
-    width: 280px;
+    width: 275px;
     height: 24px;
     font-size: 14px;
     line-height: 22px;
@@ -57,4 +57,11 @@
 
 .tcenter{
     text-align: center;
+}
+
+.toggle_method{
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
 }
