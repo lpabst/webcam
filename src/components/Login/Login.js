@@ -111,7 +111,16 @@ class Login extends Component {
         password: this.state.password
       })
       .then (res => {
-        console.log(res);
+        if (res.data.status === 'success'){
+          window.username = res.data.username
+          let newUrl = window.location.href;
+          newUrl += newUrl.charAt(newUrl.length-1) === '/' ? 'home' : '/home';
+          window.location.href = newUrl;
+        }else if (res.data.status === 'error'){
+          this.setState({
+            errorMessage: res.data.message
+          })
+        }
       })
       .catch(err=>console.log(err));
     }

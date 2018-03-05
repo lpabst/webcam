@@ -21,7 +21,23 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.openWebCam();
+    axios.get('/api/isLoggedIn')
+    .then( res => {
+      if (res.data.isLoggedIn){
+        window.username = res.data.username;
+        this.openWebCam();
+      }else{
+        let newUrl = window.location.href;
+        newUrl = newUrl.replace('/home', '');
+        window.location.href = newUrl;
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      let newUrl = window.location.href;
+      newUrl = newUrl.replace('/home', '');
+      window.location.href = newUrl;
+    });
   }
 
   openWebCam() {

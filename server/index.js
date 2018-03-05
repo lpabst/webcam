@@ -31,10 +31,8 @@ app.use(express.static(__dirname + './../build'))
 var userController = require("./userController.js");
 
 //////////Endpoints for the front end
-
-app.post('/api/passwordLogin', (req, res) => {
-  console.log('hi');
-});
+app.get('/api/isLoggedIn', userController.isLoggedIn);
+app.post('/api/passwordLogin', userController.passwordLogin);
 // app.post('/api/frLogin', userController.frLogin);
 
 app.post('/api/facialRecognition', (req, res) => {
