@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 import './Login.css';
 
@@ -19,8 +20,20 @@ class Login extends Component {
 
   render() {
     return (
-      <section className='login_page'>
-        
+      <section className='login'>
+
+        <div className='login_navbar'>
+          <Link className='signup_link' to='/signup' >Sign Up</Link>
+        </div>
+
+        <div className='login_form'>
+          <p className='mcenter tcenter'>Login Here</p>
+          <div className='login_input_div'><input placeholder='username' /></div>
+          <div className='login_input_div'><input placeholder='password' type='password' /></div>
+          <button>Login</button>
+          <button>Facial Recognition Login</button>
+        </div>
+
       </section>
     );
   }
