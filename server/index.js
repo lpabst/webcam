@@ -17,20 +17,26 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
-    maxAge: (1000 * 60 * 60 * 24 * 14) //this is 14 days
+    maxAge: (1000 * 60 * 60 * 24 * 14) 
   }
 }))
 
-// massive(config.connection)
-// .then( db => {
-//   app.set('db', db);
-// })
+massive(config.connection)
+.then( db => {
+  app.set('db', db);
+})
 
 app.use(express.static(__dirname + './../build'))
 
 var userController = require("./userController.js");
 
 //////////Endpoints for the front end
+
+app.post('/api/passwordLogin', (req, res) => {
+  console.log('hi');
+});
+// app.post('/api/frLogin', userController.frLogin);
+
 app.post('/api/facialRecognition', (req, res) => {
   let { url, payload } = req.body;
 

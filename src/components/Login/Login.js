@@ -106,8 +106,14 @@ class Login extends Component {
     if (this.state.loginMethodFR){
       //take pic, axios username and pic login (use facial recognition api)
     }else{
-      // axios username/password login
-      console.log(this.state);
+      axios.post('/api/passwordLogin', {
+        username: this.state.username,
+        password: this.state.password
+      })
+      .then (res => {
+        console.log(res);
+      })
+      .catch(err=>console.log(err));
     }
   }
 
