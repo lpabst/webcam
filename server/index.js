@@ -34,8 +34,7 @@ var userController = require("./userController.js");
 app.get('/api/isLoggedIn', userController.isLoggedIn);
 app.post('/api/passwordLogin', userController.passwordLogin);
 app.post('/api/createProfile', userController.createProfile);
-
-// app.post('/api/frLogin', userController.frLogin);
+app.post('/api/frLogin', userController.frLogin);
 
 app.post('/api/facialRecognition', (req, res) => {
   let { url, payload } = req.body;

@@ -12,7 +12,7 @@ class Login extends Component {
     this.state = {
       username: '',
       password: '',
-      userPic: '',
+      pic: '',
       loginMethodFR: true,
       errorMessage: '',
     }
@@ -104,7 +104,25 @@ class Login extends Component {
       return;
     }
     if (this.state.loginMethodFR){
-      //take pic, axios username and pic login (use facial recognition api)
+      let hidden_canvas = document.querySelector('canvas');
+      let video = document.querySelector('video');
+      let width = video.videoWidth;
+      let height = video.videoHeight;
+      let context = hidden_canvas.getContext('2d');
+  
+      // Set the canvas to the same dimensions as the video.
+      hidden_canvas.width = width;
+      hidden_canvas.height = height;
+  
+      // Draw a copy of the current frame from the video onto the canvas.
+      context.drawImage(video, 0, 0, width, height);
+  
+      // Get the image dataURL from the canvas.
+      var imageDataURL = hidden_canvas.toDataURL('image/png');
+  
+      this.setState({
+        pic: imageDataURL
+      }, this.frLogin);
     }else{
       axios.post('/api/passwordLogin', {
         username: this.state.username,
@@ -124,6 +142,28 @@ class Login extends Component {
       })
       .catch(err=>console.log(err));
     }
+  }
+
+  frLogin(){
+    axios.post('/api/frLogin', {
+      image: this.state.pic,
+      username: this.state.username
+    })
+    .then( res => {
+      console.log(res);
+      if (res.data.status === 'error'){
+        alert(res.data.message);
+      }else if (res.data.status === 'success'){
+        window.username = res.data.username
+        let newUrl = window.location.href;
+        newUrl += newUrl.charAt(newUrl.length-1) === '/' ? 'home' : '/home';
+        window.location.href = newUrl;
+      }
+      else{
+        console.log('hole in the logic');
+      }
+    })
+    .catch(err=>console.log(err));
   }
 
   render() {
