@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import {Link} from 'react-router-dom';
 import './Signup.css';
 
@@ -124,7 +125,22 @@ class Signup extends Component {
       if (!res.data.images){
         return alert('Please take another photo. Make sure you are in a well lit area and your full face is included in the picture.');
       }else{
-        // axios call to enroll photo in gallery AND safe profile info to DB
+        axios.post('/api/createProfile', {
+          image: image,
+          username: this.state.username,
+          password: this.state.password
+        })
+        .then( result => {
+          if (result.data.status === 'success'){
+            alert('Successfully created new profile');
+          }else{
+            alert('error in creating profile');
+          }
+          let newUrl = window.location.href;
+          newUrl = newUrl.replace('/signup', '');
+          window.location.href = newUrl;
+        })
+        .catch(err => console.log(err));
       }
     })
     .catch(err=>console.log(err));
