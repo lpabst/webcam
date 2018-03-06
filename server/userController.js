@@ -28,6 +28,13 @@ module.exports = {
     }
   },
 
+  logout: (req, res) => {
+    req.session.id = null;
+    req.session.username = null;
+    req.session.isLoggedIn = false;
+    return res.status(200).send('ok');
+  },
+
   createProfile: (req, res) => {
     const db = app.get('db');
     let { image, username, password } = req.body;

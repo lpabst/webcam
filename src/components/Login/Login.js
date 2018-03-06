@@ -172,6 +172,8 @@ class Login extends Component {
     return (
       <section className='login'>
 
+        <div className='login_landing_img'></div>
+
         <div className='login_navbar'>
           <Link className='signup_link' to='/signup' >Sign Up</Link>
         </div>

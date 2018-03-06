@@ -32,6 +32,7 @@ var userController = require("./userController.js");
 
 //////////Endpoints for the front end
 app.get('/api/isLoggedIn', userController.isLoggedIn);
+app.post('/api/logout', userController.logout);
 app.post('/api/passwordLogin', userController.passwordLogin);
 app.post('/api/createProfile', userController.createProfile);
 app.post('/api/frLogin', userController.frLogin);

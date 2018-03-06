@@ -184,6 +184,8 @@ class Signup extends Component {
     return (
       <section className='signup'>
 
+        <div className='login_landing_img'></div>
+
         <div className='signup_navbar'>
           <Link to='/'>Back to login</Link>
         </div>

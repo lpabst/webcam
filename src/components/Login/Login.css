@@ -3,6 +3,17 @@
     position: relative;
 }
 
+.login_landing_img{
+    width: 100%;
+    height: calc(100% - 50px);
+    position: fixed;
+    top: 50px;
+    left: 0px;
+    background: url('./../../media/login.jpg')center no-repeat;
+    background-size: cover;
+    z-index: -5;
+}
+
 .login a{
     height: 50px;
     line-height: 50px;
@@ -11,7 +22,7 @@
     color: #ddd;
     text-decoration: none;
     position: absolute;
-    left: calc(50% + 70px);
+    left: calc(50% - 30px);
 }
 
 .login input{

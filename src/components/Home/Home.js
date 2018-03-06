@@ -40,6 +40,15 @@ class Home extends Component {
     });
   }
 
+  logout(){
+    axios.post('/api/logout')
+    .then( res => {
+      console.log(res);
+      let newUrl = window.location.href.replace('/home', '');
+      window.location.href = newUrl;
+    })
+  }
+
   openWebCam() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       this.openBrowserCam();
@@ -238,6 +247,15 @@ class Home extends Component {
       <div className="home">
 
         <canvas id='canvas'></canvas>
+
+        <div className='home_landing_img'></div>
+
+        <div className='home_navbar'>
+          <div className='home_navbar_list'>
+            <p>Welcome, {window.username}</p>
+            <p className='logout' onClick={this.logout} >Logout</p>
+          </div>
+        </div>
 
         <div className='photoInfo' id='photoInfo' >
           <p>Age: {this.state.age}</p>
